@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seasons of Love — GCSE Music Listening Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f2ece4;
+    --surface: #ffffff;
+    --border: #d4cdc4;
+    --border-strong: #1a1a1a;
+    --ink: #1a1a1a;
+    --ink-mid: #3d3833;
+    --ink-light: #6b6259;
+    --red: #c0392b;
+    --red-light: #e74c3c;
+    --teal: #1a8a7d;
+    --teal-bg: #e6f5f2;
+    --correct: #1a7a3a;
+    --correct-bg: #e2f2e8;
+    --correct-border: #2d9a52;
+    --wrong-fade: #aaa59e;
+    --stripe: #e8e1d8;
+    --font-display: 'Oswald', 'Impact', 'Arial Narrow', sans-serif;
+    --font-body: 'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* Subtle grungy grain */
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+
+  .app { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 2rem 2.5rem; }
+
+  /* ── Title Screen ── */
+  .title-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    text-align: center;
+    animation: fadeIn 0.8s ease;
+  }
+
+  .title-screen h1 {
+    font-family: var(--font-display);
+    font-size: 5.5rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.0;
+    margin-bottom: 0.15em;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+  }
+
+  .title-screen h1 em {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.28em;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--red);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    margin-bottom: 0.6em;
+  }
+
+  .title-screen .subtitle {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--ink-mid);
+    margin-bottom: 0.3em;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .title-screen .divider {
+    width: 80px;
+    height: 4px;
+    background: var(--red);
+    margin: 1.2rem auto;
+  }
+
+  .title-screen .instructions {
+    max-width: 560px;
+    font-size: 1.1rem;
+    color: var(--ink-mid);
+    line-height: 1.65;
+    margin: 0.5rem 0 2.5rem;
+  }
+
+  .btn {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0.8em 2.2em;
+    border: 3px solid var(--ink);
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 0;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: all 0.2s ease;
+  }
+
+  .btn:hover {
+    background: var(--red);
+    border-color: var(--red);
+    color: #fff;
+  }
+
+  .btn-small {
+    font-size: 0.9rem;
+    padding: 0.55em 1.4em;
+    border-width: 2px;
+  }
+
+  .btn-correct {
+    border-color: var(--correct);
+    background: var(--correct);
+    color: #fff;
+  }
+
+  .btn-correct:hover {
+    background: var(--correct-border);
+    border-color: var(--correct-border);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink-mid);
+    border-color: var(--border);
+  }
+
+  .btn-ghost:hover {
+    background: var(--ink);
+    color: var(--bg);
+    border-color: var(--ink);
+  }
+
+  /* ── Section Header ── */
+  .section-header {
+    text-align: center;
+    padding: 1.5rem 0 1.2rem;
+    border-bottom: 3px solid var(--ink);
+    margin-bottom: 2rem;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .section-header .section-label {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 0.25em;
+  }
+
+  .section-header h2 {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    color: var(--ink);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .section-header .time-range {
+    font-size: 1rem;
+    color: var(--ink-light);
+    margin-top: 0.35em;
+    font-style: italic;
+  }
+
+  /* ── Questions ── */
+  .question-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 0;
+    padding: 1.8rem 2rem;
+    margin-bottom: 1.2rem;
+    animation: slideUp 0.45s ease both;
+    position: relative;
+  }
+
+  .question-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 5px;
+    height: 100%;
+    background: var(--red);
+  }
+
+  .question-card:nth-child(2) { animation-delay: 0.06s; }
+  .question-card:nth-child(3) { animation-delay: 0.12s; }
+  .question-card:nth-child(4) { animation-delay: 0.18s; }
+  .question-card:nth-child(5) { animation-delay: 0.24s; }
+
+  .question-number {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--red);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    margin-bottom: 0.5em;
+  }
+
+  .question-text {
+    font-size: 1.35rem;
+    font-weight: 600;
+    line-height: 1.45;
+    margin-bottom: 1.2em;
+    color: var(--ink);
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .option {
+    background: var(--bg);
+    border: 2px solid var(--border);
+    border-radius: 0;
+    padding: 0.8rem 1.1rem;
+    font-size: 1.1rem;
+    color: var(--ink-mid);
+    display: flex;
+    align-items: baseline;
+    gap: 0.55em;
+    transition: all 0.2s ease;
+  }
+
+  .option-letter {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 1.05rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Answer Reveal ── */
+  .answer-revealed .option {
+    opacity: 0.35;
+    color: var(--wrong-fade);
+  }
+
+  .answer-revealed .option.is-correct {
+    opacity: 1;
+    background: var(--correct-bg);
+    border-color: var(--correct-border);
+    color: var(--ink);
+  }
+
+  .answer-revealed .option.is-correct .option-letter {
+    color: var(--correct);
+  }
+
+  .explanation {
+    display: none;
+    margin-top: 1.1em;
+    padding: 1em 1.2em;
+    background: var(--teal-bg);
+    border-left: 4px solid var(--teal);
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: var(--ink-mid);
+    animation: fadeIn 0.35s ease;
+  }
+
+  .answer-revealed .explanation { display: block; }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0 1rem;
+    margin-top: 1rem;
+    border-top: 2px solid var(--border);
+  }
+
+  .nav-bar .step-info {
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .nav-group { display: flex; gap: 0.6rem; }
+
+  /* ── Progress dots ── */
+  .progress {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.8rem 0 1.4rem;
+  }
+
+  .dot {
+    width: 12px; height: 12px;
+    border-radius: 0;
+    background: var(--border);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .dot.active { background: var(--red); border-color: var(--red); }
+  .dot.done { background: var(--ink-light); }
+
+  /* ── Animations ── */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hidden { display: none !important; }
+
+  /* ── Responsive ── */
+  @media (max-width: 800px) {
+    .title-screen h1 { font-size: 3.2rem; }
+    .section-header h2 { font-size: 1.8rem; }
+    .question-text { font-size: 1.15rem; }
+    .options { grid-template-columns: 1fr; }
+    .app { padding: 1.2rem 1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+const QUIZ_DATA = {
+  title: "Seasons of Love",
+  show: "from Rent (1996 Original Broadway Cast Recording)",
+  composer: "Jonathan Larson",
+  sections: [
+    {
+      label: "Section A",
+      title: "Opening (0:00–1:00)",
+      timeRange: "The famous opening — a cappella voices, then building texture",
+      questions: [
+        {
+          q: "The song opens with voices singing without any instrumental accompaniment. What is the correct musical term for this texture?",
+          options: ["Monophonic", "A cappella", "Polyphonic", "Heterophonic"],
+          answer: 1,
+          explanation: "A cappella means singing without instrumental accompaniment. The opening of 'Seasons of Love' is one of the most recognisable a cappella openings in musical theatre. While the voices do sing in harmony (which is homophonic texture), the specific term for unaccompanied singing is a cappella."
+        },
+        {
+          q: "The opening vocal line centres on a repeated rhythmic and melodic pattern built around the lyric '525,600 minutes'. What is this type of repeated musical idea called?",
+          options: ["A sequence", "A riff / ostinato", "A cadenza", "A leitmotif"],
+          answer: 1,
+          explanation: "A riff or ostinato is a short repeated musical pattern. The '525,600 minutes' phrase functions as an ostinato — it recurs throughout the song and anchors the harmonic and rhythmic structure. A sequence would involve the pattern shifting pitch each time, and a cadenza is an unaccompanied solo passage."
+        },
+        {
+          q: "How would you best describe the texture when the full ensemble first joins in during this opening minute?",
+          options: ["Monophonic — everyone sings the same melody", "Homophonic — a melody with chordal harmony underneath", "Polyphonic — multiple independent melody lines", "Unison throughout with no harmony"],
+          answer: 1,
+          explanation: "The texture is homophonic: there is a clear main melody supported by block chordal harmony from the other voices. This is the most common texture in pop and musical theatre — a lead vocal line with backing harmonies moving in the same rhythm."
+        },
+        {
+          q: "The harmony in the opening is firmly rooted in B♭ major with mostly diatonic chords. Which of these best describes the harmonic rhythm?",
+          options: ["Rapid chord changes on every beat", "Slow, sustained chords changing roughly every bar", "Chromatic harmony with dissonant clashes", "No chord changes — a drone throughout"],
+          answer: 1,
+          explanation: "The harmonic rhythm is relatively slow and steady, with chords typically changing once per bar. This creates a warm, stable, hymn-like feel. The progression (I–vi–IV–V in B♭ major) is diatonic and uses standard pop chord relationships."
+        }
+      ]
+    },
+    {
+      label: "Section B",
+      title: "Development (1:00–2:00)",
+      timeRange: "Instruments enter — the gospel-influenced solo and band texture builds",
+      questions: [
+        {
+          q: "Around the one-minute mark, a full band enters. Which instruments form the core of the accompanying ensemble?",
+          options: ["String quartet and harpsichord", "Keyboard/piano, bass guitar, and drum kit", "Brass section and timpani", "Acoustic guitar and woodwind"],
+          answer: 1,
+          explanation: "The accompaniment is a standard pop/rock band setup: keyboard (piano and synth pads), electric bass guitar, and drum kit. This reflects the contemporary musical theatre style of Rent, which draws on rock, pop, and gospel rather than a traditional orchestral pit band."
+        },
+        {
+          q: "A female soloist (originally Daphne Rubin-Vega) takes a prominent ad-libbed vocal line with melismatic decoration. What does 'melisma' mean?",
+          options: ["Singing exactly as written on the score", "Singing one syllable across several different notes", "Singing in a very low register", "Singing without vibrato"],
+          answer: 1,
+          explanation: "Melisma is a vocal technique where a single syllable is stretched across multiple notes — think of the elaborate runs you hear in gospel and R&B singing. This gospel-influenced melismatic style is a key feature of this section and adds emotional intensity."
+        },
+        {
+          q: "The dynamic level builds noticeably during this section. Which term best describes this gradual increase in volume?",
+          options: ["Diminuendo", "Sforzando", "Crescendo", "Subito piano"],
+          answer: 2,
+          explanation: "A crescendo is a gradual increase in dynamic level (volume). The section builds from the relatively quiet a cappella opening to a much fuller, louder sound as instruments and the solo voice layer in. A diminuendo is the opposite; sforzando is a sudden accent; and subito piano is an abrupt drop to quiet."
+        },
+        {
+          q: "The metre (time signature) remains constant throughout this section. What is it?",
+          options: ["3/4 (waltz time)", "4/4 (common time)", "6/8 (compound duple)", "5/4 (irregular)"],
+          answer: 1,
+          explanation: "The song is in 4/4 (common time) throughout — four crotchet beats per bar. This is the standard metre for pop, rock, and gospel styles, and it gives the song its steady, anthem-like pulse."
+        }
+      ]
+    },
+    {
+      label: "Section C",
+      title: "Climax & Close (2:00–3:00)",
+      timeRange: "The big gospel climax — key change, powerful dynamics, and final resolution",
+      questions: [
+        {
+          q: "Near the climax, the key shifts upward. What is this compositional device called and what effect does it create?",
+          options: ["A modulation — it raises the energy and emotional intensity", "A coda — it signals the ending", "An anacrusis — it creates a pick-up effect", "A pedal point — it grounds the harmony"],
+          answer: 0,
+          explanation: "A modulation is a change of key within a piece. Upward modulations (raising the key by a semitone or tone) are a very common pop and musical theatre technique used to inject fresh energy into a final chorus and heighten the emotional climax."
+        },
+        {
+          q: "At the loudest point, the full cast sings together at fortissimo. How would you describe the overall texture here compared with the opening?",
+          options: ["Thinner and more sparse", "Identical to the a cappella opening", "Much thicker — full band and massed voices creating a rich, layered texture", "Solo voice with quiet string accompaniment"],
+          answer: 2,
+          explanation: "The texture at the climax is at its thickest and most dense: massed voices singing in harmony over a full band. This dramatic contrast with the sparse a cappella opening is a deliberate structural device — building from thin to thick texture across the whole song creates a powerful emotional arc."
+        },
+        {
+          q: "The song's structure features the main '525,600 minutes' theme returning multiple times, with contrasting solo verses in between. Which musical form does this most closely resemble?",
+          options: ["Binary form (AB)", "Through-composed", "Verse–chorus form", "Rondo (ABACA)"],
+          answer: 2,
+          explanation: "The song follows a verse–chorus structure common in pop music: the recurring '525,600 minutes' sections act as the chorus, with contrasting solo passages as verses. While it shares some features with rondo form (a recurring theme with episodes), verse–chorus is the most accurate description for this pop/musical theatre context."
+        },
+        {
+          q: "The final chord resolves to a warm, consonant major chord with voices and instruments fading out. What type of cadence is this?",
+          options: ["Interrupted (deceptive) cadence", "Plagal (IV–I) cadence", "Imperfect (half) cadence", "Perfect (V–I) cadence"],
+          answer: 3,
+          explanation: "The song ends on a perfect cadence (dominant to tonic, or V–I), resolving firmly to the home key. This gives a strong sense of completion and finality. A plagal cadence (IV–I) has a more 'amen'-like quality; an interrupted cadence would leave the listener surprised; an imperfect cadence would feel unfinished."
+        }
+      ]
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════
+// CONFIG — paste your Google Apps Script URL here
+// ═══════════════════════════════════════════
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycby9QUGDokyJGJpoEC1dU_1iwaYApud9rh92e9MFwBD7vy77fNIWDH5X_xN5U8js2vFR/exec';
+
+// ── App State ──
+let currentView = 'title';   // title | name | section | results
+let currentSection = 0;
+let pupilFirst = '';
+let pupilSurname = '';
+let answers = {};             // { "0-0": 2, "0-1": 1, ... } keyed by "section-question"
+let submitted = 'pending';   // 'pending' | 'submitting' | 'success' | 'failed'
+let isTeacherMode = false;
+
+// Flatten all questions for indexing
+const allQuestions = QUIZ_DATA.sections.flatMap((sec, si) =>
+  sec.questions.map((q, qi) => ({ ...q, sectionIndex: si, questionIndex: qi }))
+);
+const totalQ = allQuestions.length;
+
+function getScore() {
+  let correct = 0;
+  allQuestions.forEach((q, i) => {
+    const key = `${q.sectionIndex}-${q.questionIndex}`;
+    if (answers[key] === q.answer) correct++;
+  });
+  return correct;
+}
+
+function render() {
+  const app = document.getElementById('app');
+  switch (currentView) {
+    case 'title': app.innerHTML = renderTitle(); break;
+    case 'name': app.innerHTML = renderNameEntry(); break;
+    case 'section': app.innerHTML = renderSection(); break;
+    case 'results': app.innerHTML = renderResults(); break;
+  }
+}
+
+// ── Title Screen ──
+function renderTitle() {
+  const sheetConfigured = GOOGLE_SHEET_URL.length > 0;
+  const statusNote = sheetConfigured
+    ? '<span style="color:var(--correct);">✓ Score submission is active</span>'
+    : '<span style="color:var(--ink-light);">Score submission not configured — quiz works offline</span>';
+
+  return `
+    <div class="title-screen">
+      <p class="subtitle">Year 9 GCSE Music — Listening Quiz</p>
+      <h1>
+        <em>${QUIZ_DATA.show}</em>
+        ${QUIZ_DATA.title}
+      </h1>
+      <p class="subtitle" style="font-size:1rem; margin-top:0.2em;">Music by ${QUIZ_DATA.composer}</p>
+      <div class="divider"></div>
+      <p class="instructions">
+        This quiz has <strong>three sections</strong>, each based on a one-minute extract
+        from the original cast recording. Listen carefully to each extract, then select your
+        answers on screen. Your score will be submitted automatically at the end.
+      </p>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;">
+        <button class="btn" onclick="beginPupilMode()">Start Quiz</button>
+        <button class="btn btn-ghost" onclick="beginTeacherMode()">Teacher Mode</button>
+      </div>
+      <p style="font-size:0.8rem; margin-top:1.8rem;">${statusNote}</p>
+    </div>
+  `;
+}
+
+// ── Name Entry ──
+function renderNameEntry() {
+  return `
+    <div class="title-screen" style="min-height:70vh;">
+      <h2 style="font-family:var(--font-display); text-transform:uppercase; font-size:2rem; margin-bottom:0.2em;">Before you begin</h2>
+      <p style="color:var(--ink-mid); margin-bottom:2rem; font-size:1.1rem;">Enter your name so we can record your score.</p>
+      <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:2rem;">
+        <input id="fname" type="text" placeholder="First name" style="
+          font-family:var(--font-body); font-size:1.2rem; padding:0.7em 1em;
+          border:2px solid var(--border); background:var(--surface); color:var(--ink);
+          width:220px; outline:none;
+        " />
+        <input id="sname" type="text" placeholder="Surname" style="
+          font-family:var(--font-body); font-size:1.2rem; padding:0.7em 1em;
+          border:2px solid var(--border); background:var(--surface); color:var(--ink);
+          width:220px; outline:none;
+        " />
+      </div>
+      <button class="btn" onclick="submitName()">Continue →</button>
+      <p id="name-error" style="color:var(--red); font-size:0.95rem; margin-top:1rem; display:none;">
+        Please enter both your first name and surname.
+      </p>
+    </div>
+  `;
+}
+
+function submitName() {
+  const f = document.getElementById('fname').value.trim();
+  const s = document.getElementById('sname').value.trim();
+  if (!f || !s) {
+    document.getElementById('name-error').style.display = 'block';
+    return;
+  }
+  pupilFirst = f;
+  pupilSurname = s;
+  currentSection = 0;
+  currentView = 'section';
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Section View (shared by pupil & teacher modes) ──
+function renderSection() {
+  const section = QUIZ_DATA.sections[currentSection];
+  const qOffset = QUIZ_DATA.sections.slice(0, currentSection).reduce((s, sec) => s + sec.questions.length, 0);
+  const letters = ['A', 'B', 'C', 'D'];
+
+  const questionsHTML = section.questions.map((question, qi) => {
+    const globalIdx = qOffset + qi + 1;
+    const key = `${currentSection}-${qi}`;
+    const selected = answers[key];
+
+    const optionsHTML = question.options.map((opt, oi) => {
+      let cls = 'option';
+      if (!isTeacherMode && selected === oi) cls += ' is-selected';
+      // In teacher mode with answers revealed, no selection highlights
+      return `<div class="${cls}" ${!isTeacherMode ? `onclick="selectAnswer(${currentSection},${qi},${oi})"` : ''} style="${!isTeacherMode ? 'cursor:pointer;' : ''}">
+        <span class="option-letter">${letters[oi]}.</span>
+        <span>${opt}</span>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="question-card" id="qcard-${key}">
+        <div class="question-number">Question ${globalIdx} of ${totalQ}</div>
+        <div class="question-text">${question.q}</div>
+        <div class="options">${optionsHTML}</div>
+        ${isTeacherMode ? `
+          <div style="margin-top:1em;">
+            <button class="btn btn-correct btn-small" onclick="toggleReveal('${key}', ${question.answer})">
+              Reveal Answer
+            </button>
+          </div>
+          <div class="explanation" id="expl-${key}">
+            <strong>Answer: ${letters[question.answer]}</strong> — ${question.explanation}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+
+  // Progress dots
+  const dots = QUIZ_DATA.sections.map((_, i) => {
+    let cls = 'dot';
+    if (i < currentSection) cls += ' done';
+    if (i === currentSection) cls += ' active';
+    return `<span class="${cls}"></span>`;
+  }).join('');
+
+  // Nav
+  const isLast = currentSection === QUIZ_DATA.sections.length - 1;
+  let nextBtn = '';
+  if (isTeacherMode) {
+    nextBtn = isLast
+      ? `<button class="btn btn-small" onclick="backToTitle()">Back to Start</button>`
+      : `<button class="btn btn-small" onclick="nextSection()">Next Section →</button>`;
+  } else {
+    // Pupil mode: check all questions in this section are answered
+    const allAnswered = section.questions.every((_, qi) => answers[`${currentSection}-${qi}`] !== undefined);
+    if (isLast) {
+      nextBtn = `<button id="nav-next-btn" class="btn btn-small ${allAnswered ? 'btn-correct' : ''}" onclick="finishQuiz()" ${allAnswered ? '' : 'disabled style="opacity:0.4;cursor:not-allowed;"'}>Submit Quiz</button>`;
+    } else {
+      nextBtn = `<button id="nav-next-btn" class="btn btn-small" onclick="nextSection()" ${allAnswered ? '' : 'disabled style="opacity:0.4;cursor:not-allowed;"'}>Next Section →</button>`;
+    }
+  }
+
+  const backBtn = currentSection > 0
+    ? `<button class="btn btn-ghost btn-small" onclick="prevSection()">← Back</button>`
+    : `<button class="btn btn-ghost btn-small" onclick="backToTitle()">← Title</button>`;
+
+  const modeLabel = isTeacherMode ? 'Teacher Mode' : `${pupilFirst} ${pupilSurname}`;
+  const stepInfo = isTeacherMode
+    ? 'Tap "Reveal Answer" on each question'
+    : 'Select your answer for each question';
+
+  return `
+    <div class="section-header">
+      <div class="section-label">${section.label} · ${modeLabel}</div>
+      <h2>${section.title}</h2>
+      <div class="time-range">${section.timeRange}</div>
+    </div>
+    <div class="progress">${dots}</div>
+    ${questionsHTML}
+    <div class="nav-bar">
+      <div class="nav-group">${backBtn}</div>
+      <div class="step-info">${stepInfo}</div>
+      <div class="nav-group">${nextBtn}</div>
+    </div>
+  `;
+}
+
+// ── Answer Selection (pupil mode) ──
+function selectAnswer(si, qi, oi) {
+  answers[`${si}-${qi}`] = oi;
+
+  // Update just this question's options via DOM
+  const card = document.getElementById('qcard-' + si + '-' + qi);
+  if (card) {
+    const options = card.querySelectorAll('.option');
+    options.forEach((opt, i) => {
+      opt.classList.toggle('is-selected', i === oi);
+    });
+  }
+
+  // Update the nav button state (enable/disable next/submit)
+  updateNavButton();
+}
+
+function updateNavButton() {
+  const section = QUIZ_DATA.sections[currentSection];
+  const allAnswered = section.questions.every((_, qi) => answers[`${currentSection}-${qi}`] !== undefined);
+  const navBtn = document.getElementById('nav-next-btn');
+  if (navBtn) {
+    navBtn.disabled = !allAnswered;
+    navBtn.style.opacity = allAnswered ? '1' : '0.4';
+    navBtn.style.cursor = allAnswered ? 'pointer' : 'not-allowed';
+    if (allAnswered) navBtn.classList.add('btn-correct');
+  }
+}
+
+// ── Teacher Reveal ──
+function toggleReveal(key, correctIdx) {
+  const card = document.getElementById('qcard-' + key);
+  const expl = document.getElementById('expl-' + key);
+  if (card.classList.contains('answer-revealed')) {
+    card.classList.remove('answer-revealed');
+  } else {
+    // Mark correct option
+    const options = card.querySelectorAll('.option');
+    options.forEach((opt, i) => {
+      opt.classList.toggle('is-correct', i === correctIdx);
+    });
+    card.classList.add('answer-revealed');
+  }
+}
+
+// ── Results Screen ──
+function renderResults() {
+  const score = getScore();
+  const pct = Math.round((score / totalQ) * 100);
+  const letters = ['A', 'B', 'C', 'D'];
+
+  const summaryHTML = allQuestions.map((q, i) => {
+    const key = `${q.sectionIndex}-${q.questionIndex}`;
+    const chosen = answers[key];
+    const isRight = chosen === q.answer;
+    return `
+      <div style="display:flex; align-items:baseline; gap:0.6em; padding:0.5em 0; border-bottom:1px solid var(--border);">
+        <span style="font-family:var(--font-display); font-weight:700; color:${isRight ? 'var(--correct)' : 'var(--red)'}; font-size:1.1rem; width:1.4em;">
+          ${isRight ? '✓' : '✗'}
+        </span>
+        <span style="color:var(--ink-mid); flex:1;">
+          <strong>Q${i + 1}:</strong> You chose <strong>${letters[chosen]}</strong>
+          ${isRight ? '' : ` — correct answer was <strong>${letters[q.answer]}</strong>`}
+        </span>
+      </div>
+    `;
+  }).join('');
+
+  let submissionStatus = '';
+  if (!GOOGLE_SHEET_URL) {
+    submissionStatus = '<p style="color:var(--ink-light); font-size:0.9rem; margin-top:1.5rem;">Score submission is not configured for this quiz.</p>';
+  } else if (submitted === 'submitting') {
+    submissionStatus = '<p style="color:var(--ink-mid); font-size:1rem; margin-top:1.5rem;">⏳ Submitting your score…</p>';
+  } else if (submitted === 'success') {
+    submissionStatus = '<p style="color:var(--correct); font-size:1rem; margin-top:1.5rem;">✓ Your score has been submitted successfully.</p>';
+  } else if (submitted === 'failed') {
+    submissionStatus = '<p style="color:var(--red); font-size:1rem; margin-top:1.5rem;">⚠ Score submission failed — please tell your teacher.</p>';
+  }
+
+  return `
+    <div style="animation: fadeIn 0.6s ease;">
+      <div class="section-header">
+        <div class="section-label">Quiz Complete</div>
+        <h2>${pupilFirst} ${pupilSurname}</h2>
+      </div>
+      <div style="text-align:center; padding:2rem 0;">
+        <div style="font-family:var(--font-display); font-size:5rem; font-weight:700; color:var(--ink);">${score}/${totalQ}</div>
+        <div style="font-size:1.3rem; color:var(--ink-mid); margin-top:0.3em;">${pct}%</div>
+        ${submissionStatus}
+      </div>
+      <div style="max-width:600px; margin:1rem auto;">
+        ${summaryHTML}
+      </div>
+      <div style="text-align:center; padding:2rem 0;">
+        <button class="btn btn-ghost btn-small" onclick="backToTitle()">Back to Start</button>
+      </div>
+    </div>
+  `;
+}
+
+// ── Navigation ──
+function beginPupilMode() {
+  isTeacherMode = false;
+  answers = {};
+  submitted = 'pending';
+  currentView = 'name';
+  render();
+}
+
+function beginTeacherMode() {
+  const pw = prompt('Enter the teacher password:');
+  if (pw !== 'TeacherMode123') {
+    alert('Incorrect password.');
+    return;
+  }
+  isTeacherMode = true;
+  answers = {};
+  submitted = 'pending';
+  pupilFirst = '';
+  pupilSurname = '';
+  currentSection = 0;
+  currentView = 'section';
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextSection() {
+  currentSection++;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevSection() {
+  if (currentSection > 0) currentSection--;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToTitle() {
+  currentView = 'title';
+  currentSection = 0;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function finishQuiz() {
+  currentView = 'results';
+
+  // Attempt to submit to Google Sheet
+  if (GOOGLE_SHEET_URL) {
+    submitted = 'submitting';
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    const letters = ['A', 'B', 'C', 'D'];
+    const payload = {
+      firstName: pupilFirst,
+      surname: pupilSurname,
+      score: getScore(),
+      total: totalQ,
+      timestamp: new Date().toISOString(),
+      answers: {}
+    };
+    allQuestions.forEach((q, i) => {
+      const key = `${q.sectionIndex}-${q.questionIndex}`;
+      const chosen = answers[key];
+      payload.answers[`Q${i + 1}`] = {
+        selected: letters[chosen],
+        correct: chosen === q.answer
+      };
+    });
+
+    fetch(GOOGLE_SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .then(() => { submitted = 'success'; render(); })
+    .catch(() => { submitted = 'failed'; render(); });
+  } else {
+    submitted = 'pending';
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+// ── Styles for selected option ──
+const extraStyles = document.createElement('style');
+extraStyles.textContent = `
+  .option.is-selected {
+    border-color: var(--ink) !important;
+    background: var(--ink) !important;
+    color: var(--bg) !important;
+  }
+  .option.is-selected .option-letter {
+    color: var(--red-light) !important;
+  }
+  .option[onclick] { cursor: pointer; }
+  .option[onclick]:hover {
+    border-color: var(--ink-mid);
+    background: var(--stripe);
+  }
+  .option.is-selected:hover {
+    background: var(--ink) !important;
+  }
+  input:focus {
+    border-color: var(--ink) !important;
+  }
+`;
+document.head.appendChild(extraStyles);
+
+// ── Initial Render ──
+render();
+</script>
+</body>
+</html>
